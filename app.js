@@ -3,6 +3,9 @@ const USERS = {
   VENDEDOR: { password: "0022", role: "VENDEDOR" },
 };
 
+const UPDATE_WORKFLOW_URL =
+  "https://github.com/limpmixpitanga/CatalogoOnlineLimpMixV2/actions/workflows/sync-products.yml";
+
 const STORAGE = {
   cart: "limpmix-v2-cart",
   view: "limpmix-v2-view",
@@ -31,6 +34,7 @@ const number = new Intl.NumberFormat("pt-BR", {
 
 const els = {
   syncState: document.querySelector("#syncState"),
+  updateProducts: document.querySelector("#updateProducts"),
   loginToggle: document.querySelector("#loginToggle"),
   loginPanel: document.querySelector("#loginPanel"),
   loginForm: document.querySelector("#loginForm"),
@@ -81,6 +85,9 @@ function bindEvents() {
   });
   els.loginForm.addEventListener("submit", handleLogin);
   els.logoutButton.addEventListener("click", logout);
+  els.updateProducts.addEventListener("click", () => {
+    window.open(UPDATE_WORKFLOW_URL, "_blank", "noopener");
+  });
   els.searchInput.addEventListener("input", applyFilters);
   els.sortBy.addEventListener("change", applyFilters);
   els.clearCategory.addEventListener("click", () => {
@@ -375,6 +382,7 @@ function renderAuth() {
   const logged = Boolean(state.role);
   els.loginToggle.textContent = logged ? state.role : "Entrar";
   els.logoutButton.hidden = !logged;
+  els.updateProducts.hidden = state.role !== "MASTER";
   els.loginForm.querySelector(".primary-button").hidden = logged;
   els.loginUser.disabled = logged;
   els.loginPass.disabled = logged;
