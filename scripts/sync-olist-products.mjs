@@ -69,7 +69,6 @@ const output = {
     "DESCRICAO",
     "CATEGORIAS",
     "CODIGO DE BARRAS",
-    "LINK FOTO",
     "VALOR",
     "ESTOQUE",
   ],
@@ -167,32 +166,12 @@ function normalizeProduct(product, stockProduct) {
     id: String(product.id ?? stockProduct.id ?? ""),
     code: clean(product.codigo),
     name: clean(product.nome),
-    description: stripHtml(clean(product.descricao_complementar || product.nome)),
+    description: clean(product.nome),
     category,
     barcode: clean(product.gtin || product.gtin_embalagem),
-    imageUrl: firstImage(product),
     price: numberFromTiny(product.preco),
-    promotionalPrice: numberFromTiny(product.preco_promocional),
     stock,
-    reservedStock: numberFromTiny(stockProduct.saldoReservado),
-    unit: clean(product.unidade),
-    status: clean(product.situacao),
-    createdAt: clean(product.data_criacao) || null,
   };
-}
-
-function firstImage(product) {
-  const external = product.imagens_externas?.find((entry) => {
-    return clean(entry?.imagem_externa?.url);
-  });
-  if (external) return clean(external.imagem_externa.url);
-
-  const attachment = product.anexos?.find((entry) => clean(entry?.anexo));
-  return attachment ? clean(attachment.anexo) : "";
-}
-
-function stripHtml(value) {
-  return value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function numberFromTiny(value) {
