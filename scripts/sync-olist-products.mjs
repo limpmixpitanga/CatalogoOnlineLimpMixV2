@@ -69,6 +69,7 @@ const output = {
     "DESCRICAO",
     "CATEGORIAS",
     "CODIGO DE BARRAS",
+    "LINK FOTO",
     "VALOR",
     "ESTOQUE",
   ],
@@ -169,9 +170,20 @@ function normalizeProduct(product, stockProduct) {
     description: clean(product.nome),
     category,
     barcode: clean(product.gtin || product.gtin_embalagem),
+    imageUrl: firstImage(product),
     price: numberFromTiny(product.preco),
     stock,
   };
+}
+
+function firstImage(product) {
+  const external = product.imagens_externas?.find((entry) => {
+    return clean(entry?.imagem_externa?.url);
+  });
+  if (external) return clean(external.imagem_externa.url);
+
+  const attachment = product.anexos?.find((entry) => clean(entry?.anexo));
+  return attachment ? clean(attachment.anexo) : "";
 }
 
 function numberFromTiny(value) {
