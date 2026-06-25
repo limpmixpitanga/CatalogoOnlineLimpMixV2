@@ -77,7 +77,30 @@ OLIST_TINY_DEVELOPER_ID=13572
 ```
 
 5. Em `Settings > Pages`, use `GitHub Actions`.
-6. Execute manualmente o workflow `Sincronizar produtos Olist Tiny`.
+6. Execute manualmente o workflow `Sincronizar produtos Olist Tiny` se quiser forcar uma atualizacao fora do horario.
+
+## Rotina de sincronizacao
+
+O site nao consulta a API Olist Tiny diretamente. Ele le o arquivo estatico:
+
+```text
+data/products.json
+```
+
+O GitHub Actions atualiza esse arquivo somente:
+
+- todos os dias as 07:50 no horario de Sao Paulo;
+- todos os dias as 13:00 no horario de Sao Paulo;
+- manualmente pelo botao `Run workflow`.
+
+Horarios equivalentes em UTC no cron do GitHub:
+
+```yaml
+- cron: "50 10 * * *"
+- cron: "0 16 * * *"
+```
+
+Quando `data/products.json` e atualizado no Git, o GitHub Pages republica o catalogo automaticamente. Pushes comuns no repositorio apenas republicam o site com a base ja salva, sem chamar a API.
 
 ## Desenvolvimento local
 
