@@ -13,7 +13,8 @@ const search = process.env.OLIST_TINY_SEARCH ?? "";
 const status = process.env.OLIST_TINY_STATUS ?? "A";
 const outputPath = process.env.OLIST_PRODUCTS_OUTPUT ?? "data/products.json";
 const maxPages = Number(process.env.OLIST_TINY_MAX_PAGES ?? "200");
-const detailDelayMs = Number(process.env.OLIST_TINY_DETAIL_DELAY_MS ?? "1500");
+const maxProducts = Number(process.env.OLIST_TINY_MAX_PRODUCTS ?? "0");
+const detailDelayMs = Number(process.env.OLIST_TINY_DETAIL_DELAY_MS ?? "2200");
 const blockedRetryMs = Number(process.env.OLIST_TINY_BLOCKED_RETRY_MS ?? "60000");
 const maxRetries = Number(process.env.OLIST_TINY_MAX_RETRIES ?? "6");
 
@@ -22,21 +23,35 @@ if (!token) {
 }
 
 const listed = await listProducts();
+const selected = maxProducts > 0 ? listed.slice(0, maxProducts) : listed;
 const products = [];
 
-for (let index = 0; index < listed.length; index += 1) {
-  const item = listed[index];
+for (let index = 0; index < selected.length; index += 1) {
+  const item = selected[index];
   const id = String(item.id ?? "");
   if (!id) continue;
 
-  const detail = await getProductDetail(id);
-  await wait(detailDelayMs);
-  const stock = await getProductStock(id);
-  const normalized = normalizeProduct({ ...item, ...detail }, stock);
-  if (normalized.stock > 0) products.push(normalized);
+  try {
+    const stock = await getProductStock(id);
+    const stockAmount = numberFromTiny(stock.saldo);
+    if (stockAmount <= 0) {
+      await wait(detailDelayMs);
+      continue;
+    }
+
+    await wait(detailDelayMs);
+    const detail = await getProductDetail(id).catch((error) => {
+      console.warn(`Detalhes indisponiveis para produto ${id}: ${error.message}`);
+      return {};
+    });
+    const normalized = normalizeProduct({ ...item, ...detail }, stock);
+    products.push(normalized);
+  } catch (error) {
+    console.warn(`Produto ${id} ignorado: ${error.message}`);
+  }
 
   if ((index + 1) % 25 === 0) {
-    console.log(`Processados ${index + 1}/${listed.length} produtos.`);
+    console.log(`Processados ${index + 1}/${selected.length} produtos.`);
   }
   await wait(detailDelayMs);
 }
@@ -47,6 +62,8 @@ const output = {
   updatedAt: new Date().toISOString(),
   source: "olist-tiny-api",
   total: products.length,
+  listedTotal: listed.length,
+  processedTotal: selected.length,
   fields: [
     "CODIGO/SKU",
     "DESCRICAO",
