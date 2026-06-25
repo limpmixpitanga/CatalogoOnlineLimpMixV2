@@ -1,14 +1,15 @@
 {
-  "updatedAt": "2026-06-25T20:36:38.539Z",
+  "updatedAt": "2026-06-25T20:57:09.034Z",
   "source": "olist-tiny-api",
-  "total": 10,
+  "total": 6,
   "listedTotal": 858,
-  "processedTotal": 12,
+  "processedTotal": 8,
   "fields": [
     "CODIGO/SKU",
     "DESCRICAO",
     "CATEGORIAS",
     "CODIGO DE BARRAS",
+    "LINK FOTO",
     "VALOR",
     "ESTOQUE"
   ],
@@ -20,6 +21,7 @@
       "description": "ABRIDOR DE LATA",
       "category": "UTENSILHOS PARA COZINHA",
       "barcode": "7899653780956",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczOVKCTBPDnmAGdWY02W5olHh2TJgdfKl9XZNfCibJXxjDSJ4a7rV6qKrRc3ePqK0BfkT9m0mHUJ-VXFKI1XcFcrzxMcggcrEA5IObUToTmk-eEjVwIR7tphGaEUAZKdZeizlZE6UUee-0fe5xatzfVQ=w539-h539-s-no-gm?authuser=0",
       "price": 3.99,
       "stock": 2
     },
@@ -30,6 +32,7 @@
       "description": "ABSORVENTE COM ABAS PACOTE 32UN MILI",
       "category": "DIVERSOS",
       "barcode": "7896104992494",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczPKLyVrbwqSmuxlZNM-bndxpboWk3_z7zO0wQfzEGJWOgPBSzy0v8ztZw8HKtxlb2kFV5cJpMV9-5cOaBLr-Jmxw1G2jbZ7f-suz-jFTKNnih0-89Zt1fHkpPLTjqfk2OA7eyNiXYygrWBm9_tMQ7JD=w539-h539-s-no-gm?authuser=0",
       "price": 19.99,
       "stock": 12
     },
@@ -40,6 +43,7 @@
       "description": "ACENDEDOR FLAMA - MODENUTI",
       "category": "UTEIS PARA CASA",
       "barcode": "7898409910562",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczNGa-nEq1NjdT_j-deGIpkl0IklflIxwq7QKqbI0Zi8qs-avuPe1cfLA3eq9x1o_p50YXoIsGy4OD5jNeI9yxE4dAPzeByUrdj4vyDnM2P8Vldi6tpnvHJBpaon-THXQVkKJzObStbKMvYeMQifWzL_=w539-h539-s-no-gm?authuser=0",
       "price": 12.99,
       "stock": 7
     },
@@ -50,6 +54,7 @@
       "description": "ACENDEDOR LUME - MODENUTI",
       "category": "UTEIS PARA CASA",
       "barcode": "7898409910517",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczNi_CRqA8y4NkkUZIgQqWwfxrZVBDJDgIPKhlCJH6QOtV1qk3oG-5ZuSMDkBcmv_bXwADh1XaYeDXR7zvNPq7RnbPLMHuOqPFbKUgEjryv7P8pKBzBVoI0w-r_GkoCq-PgPYPYeBvOTxmPtNg_Kwp0s=w500-h500-s-no-gm?authuser=0",
       "price": 11.99,
       "stock": 12
     },
@@ -60,6 +65,7 @@
       "description": "AGUA DE PASSAR MÁSTER FRESH COM GATILHO 1L MUNDUS",
       "category": "AMACIANTES DE ROUPAS",
       "barcode": "609963029907",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczMPHYSpaDObVguqpUyZOtdWmuODGOuh_iqx-WCDjSJjuDtD2PpEYlKLUeF-Rkm9goPtGyna0VRdwnsfSli-RQfcmwqaPj8wg-9fPL-0ucpTXiCCYWTwVcN-ewQjwLD1_EPkEd4ZDLHI8370hmBrHxF6=w539-h539-s-no-gm?authuser=0",
       "price": 34.99,
       "stock": 5
     },
@@ -70,48 +76,9 @@
       "description": "AGUA DE PASSAR MÁSTER FRESH COM GATILHO 500ML MUNDUS",
       "category": "AMACIANTES DE ROUPAS",
       "barcode": "609963029945",
+      "imageUrl": "https://lh3.googleusercontent.com/pw/AP1GczOjKRuEAG5RrRBt9THcgSlLQff_lMNJd_M0RcSYxGK_o5TuV7-jhqL6qRqqDmYuzsOLxO5qb86iJyJfgeKhjswJUt6Zqg88xLOiynodmEf0evLGdFsu15-hMQS0Oov7aXhQorD-f7YCfC9SIHXjxGua=w539-h539-s-no-gm?authuser=0",
       "price": 21.99,
       "stock": 8
-    },
-    {
-      "id": "345363147",
-      "code": "10",
-      "name": "AGUA SANITARIA 1L QBOA",
-      "description": "AGUA SANITARIA 1L QBOA",
-      "category": "ÁGUA SANITÁRIA E CLORO",
-      "barcode": "7896083800018",
-      "price": 4.49,
-      "stock": 21
-    },
-    {
-      "id": "345363151",
-      "code": "193",
-      "name": "AGUA SANITARIA 2L QBOA",
-      "description": "AGUA SANITARIA 2L QBOA",
-      "category": "ÁGUA SANITÁRIA E CLORO",
-      "barcode": "7896083800025",
-      "price": 8.99,
-      "stock": 29
-    },
-    {
-      "id": "345363155",
-      "code": "803",
-      "name": "AGUA SANITARIA 5L LAR SUPER VALE",
-      "description": "AGUA SANITARIA 5L LAR SUPER VALE",
-      "category": "ÁGUA SANITÁRIA E CLORO",
-      "barcode": "7898948023433",
-      "price": 13.99,
-      "stock": 96
-    },
-    {
-      "id": "345363163",
-      "code": "192",
-      "name": "AGUA SANITARIA 5L QBOA",
-      "description": "AGUA SANITARIA 5L QBOA",
-      "category": "ÁGUA SANITÁRIA E CLORO",
-      "barcode": "7896083800247",
-      "price": 18.99,
-      "stock": 22
     }
   ]
 }
