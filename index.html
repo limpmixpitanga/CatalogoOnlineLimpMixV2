@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catalogo Online LimpMix V2</title>
+    <meta
+      name="description"
+      content="Catalogo online LimpMix Pitanga V2 com dados sincronizados pela API Olist Tiny."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="#" aria-label="Catalogo LimpMix">
+        <span class="brand-logo">LM</span>
+        <span>
+          <strong>LimpMix Pitanga</strong>
+          <small>Catalogo Online V2</small>
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <span class="sync-pill" id="syncState">Carregando produtos...</span>
+        <button class="ghost-button" id="loginToggle" type="button">Entrar</button>
+      </div>
+    </header>
+
+    <section class="login-panel" id="loginPanel" hidden>
+      <form id="loginForm" class="login-form">
+        <label>
+          <span>Usuario</span>
+          <input id="loginUser" autocomplete="username" />
+        </label>
+        <label>
+          <span>Senha</span>
+          <input id="loginPass" type="password" autocomplete="current-password" />
+        </label>
+        <button class="primary-button" type="submit">Acessar</button>
+        <button class="ghost-button" id="logoutButton" type="button" hidden>
+          Sair
+        </button>
+        <span class="login-feedback" id="loginFeedback"></span>
+      </form>
+    </section>
+
+    <main class="shell">
+      <aside class="sidebar" aria-label="Categorias">
+        <div class="sidebar-title">
+          <strong>Categorias</strong>
+          <button class="text-button" id="clearCategory" type="button">Todas</button>
+        </div>
+        <nav class="category-list" id="categoryList"></nav>
+      </aside>
+
+      <section class="catalog">
+        <section class="hero" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow">Fonte: API do ERP Olist Tiny</p>
+            <h1 id="pageTitle">Catalogo Online LimpMix V2</h1>
+            <p>
+              Produtos carregados da API, exibindo apenas itens com estoque
+              positivo. Precos aparecem somente para usuarios cadastrados.
+            </p>
+          </div>
+          <div class="stats" id="masterStats" hidden>
+            <div>
+              <span id="visibleProducts">0</span>
+              <small>produtos exibidos</small>
+            </div>
+            <div>
+              <span id="visibleStock">0</span>
+              <small>estoque total</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="toolbar" aria-label="Busca e visualizacao">
+          <label class="search-field">
+            <span>Buscar</span>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Descricao, SKU, codigo de barras ou categoria"
+              autocomplete="off"
+            />
+          </label>
+
+          <label>
+            <span>Ordenar</span>
+            <select id="sortBy">
+              <option value="name">Descricao</option>
+              <option value="code">Codigo/SKU</option>
+              <option value="stockDesc">Maior estoque</option>
+              <option value="priceAsc">Menor valor</option>
+              <option value="priceDesc">Maior valor</option>
+            </select>
+          </label>
+
+          <div class="view-switch" aria-label="Modo de visualizacao">
+            <button type="button" data-view="list">Lista</button>
+            <button type="button" data-view="small">Pequena</button>
+            <button type="button" data-view="medium">Medio</button>
+            <button type="button" data-view="large">Grande</button>
+          </div>
+        </section>
+
+        <div class="result-line">
+          <strong id="resultCount">0 produtos</strong>
+          <span id="activeCategory">Todas as categorias</span>
+        </div>
+
+        <section class="product-grid view-medium" id="productGrid"></section>
+        <p class="empty-state" id="emptyState" hidden>
+          Nenhum produto com estoque positivo encontrado para essa busca.
+        </p>
+      </section>
+    </main>
+
+    <aside class="quote minimized" id="quotePanel" aria-labelledby="quoteTitle">
+      <button class="quote-toggle" id="quoteToggle" type="button">
+        <span id="quoteTitle">Orcamento</span>
+        <strong id="quoteCount">0 itens</strong>
+      </button>
+      <div class="quote-body">
+        <div id="quoteItems" class="quote-items"></div>
+        <div class="quote-total" id="quoteTotalRow">
+          <span>Total</span>
+          <strong id="quoteTotal">R$ 0,00</strong>
+        </div>
+        <button class="primary-button" id="sendWhatsApp" type="button">
+          Enviar pelo WhatsApp
+        </button>
+        <button class="ghost-button" id="clearQuote" type="button">Limpar</button>
+      </div>
+    </aside>
+
+    <template id="productTemplate">
+      <article class="product-card">
+        <div class="photo-wrap">
+          <img alt="" loading="lazy" data-photo />
+          <span data-fallback></span>
+        </div>
+        <div class="product-body">
+          <p class="sku" data-code></p>
+          <h2 data-name></h2>
+          <p class="category" data-category></p>
+          <dl>
+            <div>
+              <dt>Codigo de barras</dt>
+              <dd data-barcode></dd>
+            </div>
+            <div>
+              <dt>Estoque</dt>
+              <dd data-stock></dd>
+            </div>
+          </dl>
+          <div class="card-actions">
+            <strong class="price" data-price></strong>
+            <button type="button" data-add>Adicionar</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
