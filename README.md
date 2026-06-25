@@ -30,6 +30,7 @@ https://limpmixpitanga.github.io/CatalogoOnlineLimpMixV2/
 - DESCRICAO
 - CATEGORIAS
 - CODIGO DE BARRAS
+- LINK FOTO
 - VALOR, usado somente para usuarios logados
 - ESTOQUE
 
