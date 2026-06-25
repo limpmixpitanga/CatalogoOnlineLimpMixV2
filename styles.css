@@ -92,6 +92,10 @@ dt,
   gap: 10px;
 }
 
+.update-button {
+  min-width: 112px;
+}
+
 .sync-pill {
   background: var(--surface-2);
   border: 1px solid var(--line);
