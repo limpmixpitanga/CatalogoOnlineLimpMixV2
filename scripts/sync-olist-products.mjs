@@ -13,7 +13,9 @@ const search = process.env.OLIST_TINY_SEARCH ?? "";
 const status = process.env.OLIST_TINY_STATUS ?? "A";
 const outputPath = process.env.OLIST_PRODUCTS_OUTPUT ?? "data/products.json";
 const maxPages = Number(process.env.OLIST_TINY_MAX_PAGES ?? "200");
-const detailDelayMs = Number(process.env.OLIST_TINY_DETAIL_DELAY_MS ?? "280");
+const detailDelayMs = Number(process.env.OLIST_TINY_DETAIL_DELAY_MS ?? "1500");
+const blockedRetryMs = Number(process.env.OLIST_TINY_BLOCKED_RETRY_MS ?? "60000");
+const maxRetries = Number(process.env.OLIST_TINY_MAX_RETRIES ?? "6");
 
 if (!token) {
   throw new Error("Defina OLIST_TINY_TOKEN no ambiente ou nos secrets do GitHub.");
@@ -27,10 +29,9 @@ for (let index = 0; index < listed.length; index += 1) {
   const id = String(item.id ?? "");
   if (!id) continue;
 
-  const [detail, stock] = await Promise.all([
-    getProductDetail(id),
-    getProductStock(id),
-  ]);
+  const detail = await getProductDetail(id);
+  await wait(detailDelayMs);
+  const stock = await getProductStock(id);
   const normalized = normalizeProduct({ ...item, ...detail }, stock);
   if (normalized.stock > 0) products.push(normalized);
 
@@ -97,10 +98,11 @@ async function getProductStock(id) {
 }
 
 async function tinyPost(url, params) {
+  const { __attempt = "0", ...apiParams } = params;
   const payload = new URLSearchParams({
     token,
     formato: "JSON",
-    ...params,
+    ...apiParams,
   });
 
   const response = await fetch(url, {
@@ -124,6 +126,16 @@ async function tinyPost(url, params) {
     const errors = Array.isArray(retorno.erros)
       ? retorno.erros.map((item) => item.erro).join("; ")
       : "erro sem detalhes";
+    if (errors.includes("API Bloqueada")) {
+      const attempt = Number(__attempt);
+      if (attempt < maxRetries) {
+        console.log(
+          `API bloqueada em ${url}. Aguardando ${blockedRetryMs / 1000}s para retry ${attempt + 1}/${maxRetries}.`
+        );
+        await wait(blockedRetryMs);
+        return tinyPost(url, { ...params, __attempt: String(attempt + 1) });
+      }
+    }
     throw new Error(`Tiny/Olist retornou erro em ${url}: ${errors}`);
   }
 
