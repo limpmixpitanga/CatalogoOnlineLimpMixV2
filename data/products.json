@@ -1,0 +1,64 @@
+{
+  "updatedAt": null,
+  "source": "sample",
+  "total": 3,
+  "fields": [
+    "CODIGO/SKU",
+    "DESCRICAO",
+    "CATEGORIAS",
+    "CODIGO DE BARRAS",
+    "LINK FOTO",
+    "VALOR",
+    "ESTOQUE"
+  ],
+  "products": [
+    {
+      "id": "sample-1",
+      "code": "ACEND-MOD",
+      "name": "Acendedor Modelo Exemplo",
+      "description": "Produto de exemplo para validar busca inteligente por acend mod.",
+      "category": "Utilidades",
+      "barcode": "7890000000011",
+      "imageUrl": "",
+      "price": 12.9,
+      "promotionalPrice": 0,
+      "stock": 18,
+      "reservedStock": 0,
+      "unit": "UN",
+      "status": "A",
+      "createdAt": null
+    },
+    {
+      "id": "sample-2",
+      "code": "LIMP-AZUL",
+      "name": "Limpador Azul Concentrado",
+      "description": "Produto de exemplo com categoria limpeza.",
+      "category": "Limpeza",
+      "barcode": "7890000000028",
+      "imageUrl": "",
+      "price": 24.5,
+      "promotionalPrice": 0,
+      "stock": 7,
+      "reservedStock": 0,
+      "unit": "UN",
+      "status": "A",
+      "createdAt": null
+    },
+    {
+      "id": "sample-hidden",
+      "code": "SEM-ESTOQUE",
+      "name": "Produto sem estoque",
+      "description": "Este item fica oculto pelo front-end porque o estoque e zero.",
+      "category": "Ocultos",
+      "barcode": "",
+      "imageUrl": "",
+      "price": 99,
+      "promotionalPrice": 0,
+      "stock": 0,
+      "reservedStock": 0,
+      "unit": "UN",
+      "status": "A",
+      "createdAt": null
+    }
+  ]
+}
