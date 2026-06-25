@@ -6,7 +6,10 @@ on:
       - main
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    # 07:50 America/Sao_Paulo
+    - cron: "50 10 * * *"
+    # 13:00 America/Sao_Paulo
+    - cron: "0 16 * * *"
 
 permissions:
   contents: write
@@ -18,7 +21,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  sync-products:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, 'Executa sincronizacao Olist Tiny')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Buscar produtos na API Olist Tiny
+        env:
+          OLIST_TINY_TOKEN: ${{ secrets.OLIST_TINY_TOKEN }}
+          OLIST_TINY_DEVELOPER_ID: ${{ vars.OLIST_TINY_DEVELOPER_ID || '13572' }}
+          OLIST_TINY_SEARCH: ${{ vars.OLIST_TINY_SEARCH || '' }}
+          OLIST_TINY_STATUS: A
+        run: node scripts/sync-olist-products.mjs
+
+      - name: Commit products.json
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Atualiza produtos via Olist Tiny API"
+          file_pattern: data/products.json
+
   deploy-pages:
+    needs: sync-products
+    if: always() && (needs.sync-products.result == 'success' || needs.sync-products.result == 'skipped')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -38,29 +69,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-  sync-products:
-    if: github.event_name != 'push' || !contains(github.event.head_commit.message, 'Atualiza produtos via Olist Tiny API')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Buscar produtos na API Olist Tiny
-        env:
-          OLIST_TINY_TOKEN: ${{ secrets.OLIST_TINY_TOKEN }}
-          OLIST_TINY_DEVELOPER_ID: ${{ vars.OLIST_TINY_DEVELOPER_ID || '13572' }}
-          OLIST_TINY_SEARCH: ${{ vars.OLIST_TINY_SEARCH || '' }}
-          OLIST_TINY_STATUS: A
-        run: node scripts/sync-olist-products.mjs
-
-      - name: Commit produtos sincronizados
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Atualiza produtos via Olist Tiny API"
-          file_pattern: data/products.json
