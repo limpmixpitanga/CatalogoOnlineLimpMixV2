@@ -1,0 +1,52 @@
+name: Sincronizar produtos Olist Tiny
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Buscar produtos na API Olist Tiny
+        env:
+          OLIST_TINY_TOKEN: ${{ secrets.OLIST_TINY_TOKEN }}
+          OLIST_TINY_DEVELOPER_ID: ${{ vars.OLIST_TINY_DEVELOPER_ID || '13572' }}
+          OLIST_TINY_SEARCH: ${{ vars.OLIST_TINY_SEARCH || '' }}
+          OLIST_TINY_STATUS: A
+        run: node scripts/sync-olist-products.mjs
+
+      - name: Commit produtos sincronizados
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Atualiza produtos via Olist Tiny API"
+          file_pattern: data/products.json
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
