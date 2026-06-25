@@ -30,8 +30,7 @@ https://limpmixpitanga.github.io/CatalogoOnlineLimpMixV2/
 - DESCRICAO
 - CATEGORIAS
 - CODIGO DE BARRAS
-- LINK FOTO
-- VALOR
+- VALOR, usado somente para usuarios logados
 - ESTOQUE
 
 ## Regras implementadas
@@ -92,6 +91,8 @@ O GitHub Actions atualiza esse arquivo somente:
 - todos os dias as 07:50 no horario de Sao Paulo;
 - todos os dias as 13:00 no horario de Sao Paulo;
 - manualmente pelo botao `Run workflow`.
+
+No catalogo, o usuario MASTER ve o botao `ATUALIZAR`. Por seguranca, esse botao abre a tela do workflow no GitHub; a execucao continua sendo feita pelo GitHub Actions, onde o token da Olist Tiny fica protegido como secret.
 
 Horarios equivalentes em UTC no cron do GitHub:
 
