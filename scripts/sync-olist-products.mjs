@@ -17,6 +17,7 @@ const maxProducts = Number(process.env.OLIST_TINY_MAX_PRODUCTS ?? "0");
 const detailDelayMs = Number(process.env.OLIST_TINY_DETAIL_DELAY_MS ?? "2200");
 const blockedRetryMs = Number(process.env.OLIST_TINY_BLOCKED_RETRY_MS ?? "60000");
 const maxRetries = Number(process.env.OLIST_TINY_MAX_RETRIES ?? "6");
+const requestTimeoutMs = Number(process.env.OLIST_TINY_REQUEST_TIMEOUT_MS ?? "30000");
 
 if (!token) {
   throw new Error("Defina OLIST_TINY_TOKEN no ambiente ou nos secrets do GitHub.");
@@ -122,14 +123,33 @@ async function tinyPost(url, params) {
     ...apiParams,
   });
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      ...(developerId ? { "Developer-Id": developerId } : {}),
-    },
-    body: payload,
-  });
+  const attempt = Number(__attempt);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), requestTimeoutMs);
+  let response;
+
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        ...(developerId ? { "Developer-Id": developerId } : {}),
+      },
+      body: payload,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (attempt < maxRetries) {
+      console.log(
+        `Falha temporaria em ${url}. Aguardando ${blockedRetryMs / 1000}s para retry ${attempt + 1}/${maxRetries}.`
+      );
+      await wait(blockedRetryMs);
+      return tinyPost(url, { ...params, __attempt: String(attempt + 1) });
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     throw new Error(`Tiny/Olist retornou HTTP ${response.status} em ${url}.`);
@@ -144,7 +164,6 @@ async function tinyPost(url, params) {
       ? retorno.erros.map((item) => item.erro).join("; ")
       : "erro sem detalhes";
     if (errors.includes("API Bloqueada")) {
-      const attempt = Number(__attempt);
       if (attempt < maxRetries) {
         console.log(
           `API bloqueada em ${url}. Aguardando ${blockedRetryMs / 1000}s para retry ${attempt + 1}/${maxRetries}.`
