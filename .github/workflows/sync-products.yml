@@ -37,6 +37,9 @@ jobs:
           OLIST_TINY_DEVELOPER_ID: ${{ vars.OLIST_TINY_DEVELOPER_ID || '13572' }}
           OLIST_TINY_SEARCH: ${{ vars.OLIST_TINY_SEARCH || '' }}
           OLIST_TINY_STATUS: A
+          OLIST_TINY_SYNC_MODE: smart
+          OLIST_TINY_REQUEST_DELAY_MS: 700
+          OLIST_TINY_INCREMENTAL_LOOKBACK_HOURS: 4
         run: node scripts/sync-olist-products.mjs
 
       - name: Commit products.json
