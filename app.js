@@ -5,6 +5,7 @@ const USERS = {
 
 const UPDATE_WORKFLOW_URL =
   "https://github.com/limpmixpitanga/CatalogoOnlineLimpMixV2/actions/workflows/sync-products.yml";
+const WHATSAPP_PHONE = "5542988859972";
 
 const STORAGE = {
   cart: "limpmix-v2-cart",
@@ -344,7 +345,7 @@ function sendWhatsApp() {
     .filter((line) => line !== null)
     .join("\n");
 
-  window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+  window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
 }
 
 function handleLogin(event) {
