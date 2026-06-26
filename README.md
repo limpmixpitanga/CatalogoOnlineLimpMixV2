@@ -104,6 +104,23 @@ Horarios equivalentes em UTC no cron do GitHub:
 
 Quando `data/products.json` e atualizado no Git, o GitHub Pages republica o catalogo automaticamente. Pushes comuns no repositorio apenas republicam o site com a base ja salva, sem chamar a API.
 
+## Sincronizacao rapida
+
+O sincronizador usa cache do `data/products.json` para reduzir chamadas na API:
+
+- se o cache ainda nao esta completo, executa carga completa otimizada;
+- se o cache esta completo, usa os endpoints incrementais de produtos e estoque;
+- se o incremental estiver temporariamente bloqueado, mantem o cache atual em vez de iniciar uma carga completa lenta;
+- categoria e imagem interna `URL imagem 1` ficam reaproveitadas do cache, e o detalhe do produto so e consultado quando necessario.
+
+Variaveis opcionais no GitHub Actions:
+
+```text
+OLIST_TINY_SYNC_MODE=smart
+OLIST_TINY_REQUEST_DELAY_MS=700
+OLIST_TINY_INCREMENTAL_LOOKBACK_HOURS=4
+```
+
 ## Desenvolvimento local
 
 ```bash
