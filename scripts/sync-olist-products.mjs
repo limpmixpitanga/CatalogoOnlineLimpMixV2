@@ -177,11 +177,6 @@ function normalizeProduct(product, stockProduct) {
 }
 
 function firstImage(product) {
-  const external = product.imagens_externas?.find((entry) => {
-    return clean(entry?.imagem_externa?.url);
-  });
-  if (external) return clean(external.imagem_externa.url);
-
   const attachment = product.anexos?.find((entry) => clean(entry?.anexo));
   return attachment ? clean(attachment.anexo) : "";
 }
