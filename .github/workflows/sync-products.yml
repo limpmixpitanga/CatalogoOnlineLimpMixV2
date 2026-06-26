@@ -10,6 +10,8 @@ on:
     - cron: "50 10 * * *"
     # 13:00 America/Sao_Paulo
     - cron: "0 16 * * *"
+    # 18:00 America/Sao_Paulo, segunda a sexta
+    - cron: "0 21 * * 1-5"
 
 permissions:
   contents: write
