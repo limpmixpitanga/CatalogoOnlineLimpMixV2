@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-30T08:45:39.911Z",
+  "updatedAt": "2026-07-01T10:49:24.751Z",
   "source": "olist-tiny-api",
   "syncMode": "incremental",
   "cacheComplete": true,
@@ -8,7 +8,7 @@
   "processedTotal": 0,
   "detailCalls": 0,
   "stockCalls": 0,
-  "changedSince": "27/06/2026 01:06:11",
+  "changedSince": "30/06/2026 01:45:39",
   "changedProductsTotal": 0,
   "changedStockTotal": 0,
   "fields": [
